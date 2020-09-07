@@ -4,6 +4,7 @@ import time
 import dill as pickle
 import browser_cookie3
 from requests_html import HTMLSession
+import smtplib
 
 
 def save_cookies(output_path):
@@ -21,6 +22,17 @@ def check_availability(url, cookies_path):
         r = session.get(url, verify=False, cookies=cookies)
         if "Delivery available" in r.html.html:
             print("Delivery available!!!")
+
+            sender_email = "pikadue@gmail.com"
+            receiver_email = "diihuu@umich.edu"
+            password = input("Type your password and press enter: ")
+            message = "Whole Foods delivery is available!"
+
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, message)
+
             break
         else:
             print("Not available, sleeping for an hour...")
